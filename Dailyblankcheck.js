@@ -1,8 +1,8 @@
 const axios = require("axios");
 
 //Smartsheetの設定
-const ACCESS_TOKEN = 'RQ34jaAZbCgNsnUkAagisx6GZXFwloXiLNEdn';
-const SHEET_ID = '138577057894276';
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const SHEET_ID = process.env.SHEET_ID;
 
 const headers = {
     "Authorization":`Bearer ${ACCESS_TOKEN}`,
@@ -102,4 +102,5 @@ async function checkUnenteredWork(){
 }
 
 // 実行
+
 checkUnenteredWork();
