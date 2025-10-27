@@ -48,6 +48,9 @@ async function checkUnenteredWork(){
             throw new Error("必要な列が見つかりません。列名を確認してください。");
         }
 
+        //未入力列のID確認
+        console.log("未入力列 flagCol:", flagCol);
+
         //全日付列を抽出
         const dateCols = cols.filter(c => /^\d{4}\/\d{1,2}\/\d{1,2}$/.test(c.title));
 
@@ -136,6 +139,7 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
 
 
 
