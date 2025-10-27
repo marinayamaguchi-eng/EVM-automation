@@ -70,7 +70,7 @@ async function checkUnenteredWork(){
 
                     if(d >= s && d <= e){
                         const cell = row.cells.find(c => c.columnId === col.id);
-                        if(!yCell || yCell.value === null || yCell.value === undefined || yCell.value === ""){
+                        if(!cell || cell.value === null || cell.value === undefined || cell.value === ""){
                             flag = true;
                             break; //空白が見つかったら未入力フラグTRUE
                         }
@@ -104,4 +104,5 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
 
