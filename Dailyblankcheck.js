@@ -9,6 +9,20 @@ const headers = {
     "Content-Type":"application/json"
 };
 
+//日付列の確認
+//日付列列名をDateに変換
+const parseYmd = (title) => {
+    const m = title.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})$/);
+    if (!m) return null;
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+};
+
+//日付を時刻をなくし日付のみにする
+const normalizeDate = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+//日付が同じかどうか
+const sameDay = (a, b) => a && b && normalizeDate(a).getTime() === normalizeDate(b).getTime();
+
 async function checkUnenteredWork(){
     try{
         //1.シート全体を取得
@@ -58,24 +72,25 @@ async function checkUnenteredWork(){
             let flag = false;
 
             //ステータスごとの処理
+            //進行中　昨日の日付の列が空の場合フラグON
             if(status === "進行中" && yCol){
-                //機能が空欄なら未入力フラグTRUE
                 const yCell = row.cells.find(c => c.columnId === yCol.id);         
                 if(!yCell || yCell.value === null || yCell.value === undefined || yCell.value === ""){
                     flag = true;
                 }
             }
 
+            //完了　開始日～終了日の間で空欄があればフラッグON
             if(status === "完了" && startDate && endDate){
-                //開始～終了日の範囲の日付列をチェック
-                const s = new Date(startDate);
-                const e = new Date(endDate);
+                const s = normalizeDate(new Date(startDate));
+                const e = normalizeDate(new Date(endDate));
 
                 for(const col of dateCols){
-                    const[yy, mm, dd] = col.title.split("/").map(Number);
-                    const d = new Date(yy, mm-1, dd);
+                    const d = parseYmd(col.title);
+                    if (!d) continue;
+                    const dNorm = normalizeDate(d);
 
-                    if(d >= s && d <= e){
+                    if(dNorm >= s && dNorm <= e)){
                         const cell = row.cells.find(c => c.columnId === col.id);
                         if(!cell || cell.value === null || cell.value === undefined || cell.value === ""){
                             flag = true;
@@ -88,11 +103,10 @@ async function checkUnenteredWork(){
             //更新リストに追加 ログ有バージョン
             const update = {
                 id: row.id,
-                cells:[{columnId: flagCol.idr, value: flag}]
+                cells:[{columnId: flagCol.id, value: flag}]
             };
 
             console.log("更新内容:", update);
-
             updateRows.push(update);
             
             /*
@@ -122,6 +136,7 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
 
 
 
