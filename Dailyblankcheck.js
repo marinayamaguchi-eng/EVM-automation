@@ -25,7 +25,7 @@ async function checkUnenteredWork(){
         console.log("列タイトル一覧:", cols.map(c => c.title));
 
         //必要な列を特定
-        const flagCol = cols.find(C => C.title === "未入力");
+        const flagCol = cols.find(c => c.title === "未入力");
         const statusCol = cols.find(c => c.title === "ステータス");
         const startCol = cols.find(c => c.title === "開始日（実績）");
         const endCol = cols.find(c => c.title === "終了日（実績）");
@@ -122,6 +122,7 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
 
 
 
