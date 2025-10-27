@@ -90,7 +90,7 @@ async function checkUnenteredWork(){
                     if (!d) continue;
                     const dNorm = normalizeDate(d);
 
-                    if(dNorm >= s && dNorm <= e)){
+                    if(dNorm >= s && dNorm <= e){
                         const cell = row.cells.find(c => c.columnId === col.id);
                         if(!cell || cell.value === null || cell.value === undefined || cell.value === ""){
                             flag = true;
@@ -136,6 +136,7 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
 
 
 
