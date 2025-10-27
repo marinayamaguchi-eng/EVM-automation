@@ -38,7 +38,7 @@ async function checkUnenteredWork(){
         const yesterday = new Date();
         yesterday.setDate(yesterday.getDate() - 1);
         const yTitle = `${yesterday.getFullYear()}/${yesterday.getMonth()+1}/${yesterday.getDate()}`;
-        const yCol = cols.find(c => c.title === yTitle);
+        const yCol = cols.find(c => c.title.trim().startsWith(yTitle));
 
         const updateRows = [];
 
@@ -54,7 +54,7 @@ async function checkUnenteredWork(){
             if(status === "進行中" && yCol){
                 //機能が空欄なら未入力フラグTRUE
                 const yCell = row.cells.find(c => c.columnId === yCol.id);
-                if(!yCell || !yCell.value){
+                if(!yCell || yCell.value === null || yCell.value === undefined || yCell.value === ""){
                     flag = true;
                 }
             }
@@ -70,7 +70,7 @@ async function checkUnenteredWork(){
 
                     if(d >= s && d <= e){
                         const cell = row.cells.find(c => c.columnId === col.id);
-                        if(!cell || !cell.value){
+                        if(!yCell || yCell.value === null || yCell.value === undefined || yCell.value === ""){
                             flag = true;
                             break; //空白が見つかったら未入力フラグTRUE
                         }
@@ -104,3 +104,4 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
