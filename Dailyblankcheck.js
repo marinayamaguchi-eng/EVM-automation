@@ -21,6 +21,9 @@ async function checkUnenteredWork(){
         const rows = sheet.rows;
         const cols = sheet.columns;
 
+        //列タイトルを確認
+        console.log("列タイトル一覧:", cols.map(c => c.title));
+
         //必要な列を特定
         const flagCol = cols.find(C => C.title === "未入力");
         const statusCol = cols.find(c => c.title === "ステータス");
@@ -40,6 +43,10 @@ async function checkUnenteredWork(){
         const yTitle = `${yesterday.getFullYear()}/${yesterday.getMonth()+1}/${yesterday.getDate()}`;
         const yCol = cols.find(c => c.title.trim().startsWith(yTitle));
 
+        //確認用ログ
+        console.log("昨日の日付タイトル:", yTitle);
+        console.log("見つかった列:", yCol);
+        
         const updateRows = [];
 
         //2.各行をチェック
@@ -53,7 +60,7 @@ async function checkUnenteredWork(){
             //ステータスごとの処理
             if(status === "進行中" && yCol){
                 //機能が空欄なら未入力フラグTRUE
-                const yCell = row.cells.find(c => c.columnId === yCol.id);
+                const yCell = row.cells.find(c => c.columnId === yCol.id);         
                 if(!yCell || yCell.value === null || yCell.value === undefined || yCell.value === ""){
                     flag = true;
                 }
@@ -104,5 +111,6 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
 
 
