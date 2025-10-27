@@ -85,11 +85,22 @@ async function checkUnenteredWork(){
                 }
             }
 
+            //更新リストに追加 ログ有バージョン
+            const update = {
+                id: row.id,
+                cells:[{columnId: flagCol.idr, value: flag}]
+            };
+
+            console.log("更新内容:", update);
+
+            updateRows.push(update);
+            
+            /*
             //更新リストに追加
             updateRows.push({
                 id: row.id,
                 cells:[{columnId: flagCol.id, value: flag}]
-            });         
+            });    */     
         }
 
         //3.更新を反映
@@ -111,6 +122,7 @@ async function checkUnenteredWork(){
 // 実行
 
 checkUnenteredWork();
+
 
 
 
