@@ -5,22 +5,25 @@ on:
     - cron: "0 4 * * *"   # 日本時間13時（UTC+0で4時）
   workflow_dispatch:      # 手動実行もできる
 
-jobs:
+jobs: #どの環境で動かすかを指定
   run-check:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout code #リポジトリのコードを持ってくる必要があるためCheckoutを入れる
         uses: actions/checkout@v3
 
+#Node.jsのセットアップ
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22'
 
+# 依存関係のインストール
       - name: Install dependencies
         run: npm install
 
+#スクリプトの実行
       - name: Run script
         run: node Dailyblankcheck.js
         env:
